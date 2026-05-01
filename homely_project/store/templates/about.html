@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="about-page">
+
+    <section class="about-hero">
+        <h1 class="about-title">About Homely</h1>
+        <p class="about-subtitle">
+            Homely is a modern e-commerce platform designed to make shopping for home essentials
+            easier, smoother, and more enjoyable.
+        </p>
+    </section>
+
+    <section class="about-main-card">
+        <div class="row g-4 align-items-center">
+            <div class="col-lg-6">
+                <div class="about-image-box">
+                    <img src="{% static 'images/about.png' %}" alt="About Homely" class="about-main-image">
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="about-content">
+                    <h2 class="about-section-title">Our Story</h2>
+                    <p>
+                        Homely was created to provide users with a simple and elegant way to explore
+                        home products by room. Instead of browsing endless product lists, users can
+                        navigate through an interactive home experience and discover products based on
+                        their daily living spaces.
+                    </p>
+                    <p>
+                        Our goal is to combine a clean shopping experience with a modern interface
+                        that feels intuitive, organized, and visually engaging.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-features-section">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="about-feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-grid-1x2"></i>
+                    </div>
+                    <h3>Organized Shopping</h3>
+                    <p>Browse products by room and category in a clear and structured way.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="about-feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-bag-check"></i>
+                    </div>
+                    <h3>Easy Experience</h3>
+                    <p>Enjoy a simple user flow from exploring products to viewing cart details.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="about-feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-house-door"></i>
+                    </div>
+                    <h3>Home Focused</h3>
+                    <p>Find products that match every part of your home in one place.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

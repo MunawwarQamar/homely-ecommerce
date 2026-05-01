@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cart{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="cart-page">
+    <h1 class="cart-title">Shopping Cart</h1>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="cart-table-box">
+                <div class="cart-table-header row g-0">
+                    <div class="col-5">Product</div>
+                    <div class="col-3 text-center">Quantity</div>
+                    <div class="col-2 text-center">Price</div>
+                    <div class="col-2 text-center">Total</div>
+                </div>
+
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                    <div class="cart-item row align-items-center g-0" id="cart-item-{{ item.id }}">
+                        <div class="col-5">
+                            <div class="cart-product-info">
+                                <div class="cart-product-image">
+                                    {% if item.product.image %}
+                                        <img
+                                            src="{{ item.product.image }}"
+                                            alt="{{ item.product.name }}"
+                                            class="cart-product-img"
+                                        >
+                                    {% else %}
+                                        <i class="bi bi-image"></i>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <h5 class="cart-product-name">{{ item.product.name }}</h5>
+                                    <a href="#" class="remove-link ajax-remove-btn" data-item-id="{{ item.id }}">Remove</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-3 text-center">
+                            <div class="qty-control">
+                                <button
+                                    type="button"
+                                    class="qty-btn ajax-update-btn"
+                                    data-item-id="{{ item.id }}"
+                                    data-action="decrease"
+                                >
+                                    -
+                                </button>
+
+                                <span id="item-quantity-{{ item.id }}">{{ item.quantity }}</span>
+
+                                <button
+                                    type="button"
+                                    class="qty-btn ajax-update-btn"
+                                    data-item-id="{{ item.id }}"
+                                    data-action="increase"
+                                >
+                                    +
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-2 text-center">
+                            <span class="cart-price">${{ item.product.price|floatformat:2 }}</span>
+                        </div>
+
+                        <div class="col-2 text-center">
+                            <span class="cart-price" id="item-total-{{ item.id }}">
+                                ${{ item.item_total|floatformat:2 }}
+                            </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="p-4 text-center text-muted" id="empty-cart-message">
+                        Your cart is empty.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="summary-box">
+                <h3 class="summary-title">Summary</h3>
+
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">${{ subtotal|floatformat:2 }}</span>
+                </div>
+
+                <div class="summary-row">
+                    <span>Tax</span>
+                    <span id="cart-tax">${{ tax|floatformat:2 }}</span>
+                </div>
+
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span id="cart-total">${{ total|floatformat:2 }}</span>
+                </div>
+
+                <button class="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const updateButtons = document.querySelectorAll('.ajax-update-btn');
+    const removeButtons = document.querySelectorAll('.ajax-remove-btn');
+
+    updateButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const itemId = this.dataset.itemId;
+            const action = this.dataset.action;
+
+            fetch(`/update-cart/${itemId}/${action}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`item-quantity-${itemId}`).innerText = data.quantity;
+                        document.getElementById(`item-total-${itemId}`).innerText = `$${parseFloat(data.item_total).toFixed(2)}`;
+                        document.getElementById('cart-subtotal').innerText = `$${parseFloat(data.subtotal).toFixed(2)}`;
+                        document.getElementById('cart-tax').innerText = `$${parseFloat(data.tax).toFixed(2)}`;
+                        document.getElementById('cart-total').innerText = `$${parseFloat(data.total).toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+
+    removeButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const itemId = this.dataset.itemId;
+
+            fetch(`/remove-from-cart/${itemId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const itemRow = document.getElementById(`cart-item-${itemId}`);
+                        if (itemRow) {
+                            itemRow.remove();
+                        }
+
+                        document.getElementById('cart-subtotal').innerText = `$${parseFloat(data.subtotal).toFixed(2)}`;
+                        document.getElementById('cart-tax').innerText = `$${parseFloat(data.tax).toFixed(2)}`;
+                        document.getElementById('cart-total').innerText = `$${parseFloat(data.total).toFixed(2)}`;
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+});
+</script>
+{% endblock %}

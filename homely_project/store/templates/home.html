@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="hero-wrapper">
+    <h1 class="hero-title">Shop Your Perfect Home</h1>
+    <p class="hero-subtitle">
+        Explore our collection of smart home products organized by room.
+        Click on any space to start shopping.
+    </p>
+
+    <div class="house-map-wrapper">
+        <img src="{% static 'images/home.jpeg' %}" alt="Homely House" class="house-map-image">
+
+     <a href="/products/5/" class="room-link room-cleaning">
+    <span class="room-label">Cleaning Room</span>
+</a>
+
+<a href="/products/2/" class="room-link room-bathroom">
+    <span class="room-label">Bathroom</span>
+</a>
+
+<a href="/products/3/" class="room-link room-bedroom">
+    <span class="room-label">Bedroom</span>
+</a>
+
+<a href="/products/4/" class="room-link room-office">
+    <span class="room-label">Office</span>
+</a>
+
+<a href="/products/6/" class="room-link room-living">
+    <span class="room-label">Living Room</span>
+</a>
+
+<a href="/products/1/" class="room-link room-kitchen">
+    <span class="room-label">Kitchen</span>
+</a>
+
+    </div>
+</div>
+{% endblock %}
+

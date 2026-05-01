@@ -1,0 +1,93 @@
+.login-page {
+    padding: 40px 0;
+    text-align: center;
+    background: linear-gradient(to bottom, #f8f9fa, #eef3f1);
+    min-height: 80vh;
+}
+
+.login-title {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 30px;
+}
+
+/* الكارد */
+.login-card {
+    max-width: 520px;
+    margin: 0 auto;
+    background-color: #dfe7e4;  /* اللون تبعك */
+    border-radius: 24px;
+    padding: 34px 30px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+    text-align: left;
+}
+
+/* Labels */
+.custom-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #212529;
+    margin-bottom: 10px;
+}
+
+/* Inputs */
+.custom-input-group {
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.custom-input-icon {
+    background-color: #ffffff;
+    border-right: none;
+    color: #6c757d;
+}
+
+.custom-input {
+    border-left: none;
+    padding: 14px 10px;
+    box-shadow: none !important;
+}
+
+/* زر اللوجن */
+.login-btn {
+    width: 100%;
+    border: none;
+    background-color: #6b7475;
+    color: #ffffff;
+    padding: 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: 0.2s ease;
+}
+
+.login-btn:hover {
+    background-color: #586061;
+}
+
+/* روابط */
+.login-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forgot-link {
+    color: #495057;
+    text-decoration: none;
+}
+
+.forgot-link:hover {
+    color: #212529;
+}
+
+.register-text {
+    margin-top: 10px;
+    color: #495057;
+}
+
+.register-text a {
+    color: #212529;
+    font-weight: 500;
+}

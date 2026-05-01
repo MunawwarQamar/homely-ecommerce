@@ -1,0 +1,155 @@
+    .hero-wrapper {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .hero-title {
+        font-size: 2.4rem;
+        font-weight: 700;
+        color: #212529;
+        margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+        color: #6c757d;
+        font-size: 1rem;
+        max-width: 650px;
+        margin: 0 auto 30px auto;
+        line-height: 1.7;
+    }
+
+    .house-map-wrapper {
+        width: 100%;
+        max-width: 720px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .house-map-image {
+        width: 100%;
+        display: block;
+        border-radius: 12px;
+    }
+
+    .room-link {
+        position: absolute;
+        display: block;
+        cursor: pointer;
+        border-radius: 10px;
+        background: transparent;
+        border: none;
+        outline: none;
+        text-decoration: none;
+    }
+
+    .room-link:hover {
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    .room-label {
+        position: absolute;
+        background-color: rgba(33, 37, 41, 0.92);
+        color: #ffffff;
+        font-size: 0.9rem;
+        font-weight: 600;
+        padding: 6px 14px;
+        border-radius: 999px;
+        opacity: 0;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        pointer-events: none;
+    }
+
+    .room-link:hover .room-label {
+        opacity: 1;
+    }
+
+    /* Cleaning room */
+    .room-cleaning {
+        top: 4%;
+        left: 7%;
+        width: 41%;
+        height: 18%;
+    }
+    .room-cleaning .room-label {
+        top: 12px;
+        left: 12px;
+    }
+
+    /* Bathroom */
+    .room-bathroom {
+        top: 4%;
+        right: 7%;
+        width: 41%;
+        height: 18%;
+    }
+    .room-bathroom .room-label {
+        top: 12px;
+        right: 12px;
+    }
+
+    /* Bedroom */
+    .room-bedroom {
+        top: 23%;
+        left: 10%;
+        width: 38%;
+        height: 17%;
+    }
+    .room-bedroom .room-label {
+        top: 12px;
+        left: 12px;
+    }
+
+    /* Office */
+    .room-office {
+        top: 23%;
+        right: 10%;
+        width: 38%;
+        height: 17%;
+    }
+    .room-office .room-label {
+        top: 12px;
+        right: 12px;
+    }
+
+    /* Living room */
+    .room-living {
+        top: 41%;
+        left: 10%;
+        width: 80%;
+        height: 18%;
+    }
+    .room-living .room-label {
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Kitchen */
+    .room-kitchen {
+        top: 60%;
+        left: 10%;
+        width: 80%;
+        height: 26%;
+    }
+    .room-kitchen .room-label {
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 1.9rem;
+        }
+
+        .hero-subtitle {
+            font-size: 0.95rem;
+            padding: 0 10px;
+        }
+
+        .room-label {
+            font-size: 0.75rem;
+            padding: 5px 10px;
+        }
+    }

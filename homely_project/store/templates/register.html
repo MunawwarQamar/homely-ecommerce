@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="register-page">
+    <h1 class="register-title">Create Account</h1>
+
+    <div class="register-card">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <label for="first_name" class="form-label custom-label">First Name</label>
+                    <input type="text" class="form-control custom-input" id="first_name" name="first_name" placeholder="Enter your first name">
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <label for="last_name" class="form-label custom-label">Last Name</label>
+                    <input type="text" class="form-control custom-input" id="last_name" name="last_name" placeholder="Enter your last name">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="email" class="form-label custom-label">Email</label>
+                <div class="input-group custom-input-group">
+                    <span class="input-group-text custom-input-icon">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                    <input type="email" class="form-control custom-input" id="email" name="email" placeholder="Enter your email">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label custom-label">Password</label>
+                <div class="input-group custom-input-group">
+                    <span class="input-group-text custom-input-icon">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" class="form-control custom-input" id="password" name="password" placeholder="Enter your password">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="confirm_password" class="form-label custom-label">Confirm Password</label>
+                <div class="input-group custom-input-group">
+                    <span class="input-group-text custom-input-icon">
+                        <i class="bi bi-shield-lock"></i>
+                    </span>
+                    <input type="password" class="form-control custom-input" id="confirm_password" name="confirm_password" placeholder="Confirm your password">
+                </div>
+            </div>
+
+            <button type="submit" class="register-btn">Register</button>
+
+            <div class="register-links">
+                <p class="login-text">
+                    Already have an account?
+                    <a href="/login/">Login</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

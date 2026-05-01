@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/product_details.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="product-details-page">
+    <div class="details-header">
+        <a href="/products/{{ product.category.id }}/" class="back-link">
+            <i class="bi bi-chevron-left"></i>
+            Back
+        </a>
+    </div>
+
+    <div class="details-card">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-5">
+                <div class="details-image-box">
+                    {% if product.image %}
+                        <img src="{{ product.image }}" alt="{{ product.name }}" class="details-image">
+                    {% else %}
+                        <div class="details-placeholder">
+                            <i class="bi bi-image"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="details-content">
+                    <h1 class="details-title">{{ product.name|upper }}</h1>
+
+                    <p class="details-description">{{ product.description }}</p>
+
+                    <div class="details-meta">
+                        <p class="details-price">${{ product.price }}</p>
+
+                        {% if product.stock_quantity > 0 %}
+                            <p class="details-stock">In stock: {{ product.stock_quantity }}</p>
+                        {% else %}
+                            <p class="details-stock">Out of stock</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="details-actions">
+                        <div class="quantity-box">
+                            <label for="quantity" class="quantity-label">Quantity</label>
+                            <input
+                                type="number"
+                                id="quantity"
+                                min="1"
+                                value="1"
+                                class="quantity-input"
+                                readonly
+                            >
+                        </div>
+
+                        <form action="/add-to-cart/{{ product.id }}/" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="add-cart-btn">Add to cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

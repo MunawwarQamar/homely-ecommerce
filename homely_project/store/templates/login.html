@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="login-page">
+    <h1 class="login-title">Login</h1>
+
+    <div class="login-card">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label for="email" class="form-label custom-label">Email</label>
+                <div class="input-group custom-input-group">
+                    <span class="input-group-text custom-input-icon">
+                        <i class="bi bi-envelope"></i>
+                    </span>
+                    <input type="email" class="form-control custom-input" id="email" name="email" placeholder="Enter your email">
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="form-label custom-label">Password</label>
+                <div class="input-group custom-input-group">
+                    <span class="input-group-text custom-input-icon">
+                        <i class="bi bi-lock"></i>
+                    </span>
+                    <input type="password" class="form-control custom-input" id="password" name="password" placeholder="Enter your password">
+                </div>
+            </div>
+
+            <button type="submit" class="login-btn">Login</button>
+
+            <div class="login-links">
+                <a href="#" class="forgot-link">Forgot password?</a>
+                <p class="register-text">
+                    Don’t have an account?
+                    <a href="/register/">Register</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
