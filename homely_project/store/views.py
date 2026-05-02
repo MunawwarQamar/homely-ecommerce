@@ -9,7 +9,7 @@ def calculate_cart_totals(cart):
     subtotal = Decimal('0.00')
 
     for item in cart_items:
-        item.item_total = item.product.price * item.quantity
+        item.item_total = item.product.final_price * item.quantity
         subtotal += item.item_total
 
     tax = subtotal * Decimal('0.10')
@@ -73,7 +73,7 @@ def update_cart_item(request, item_id, action):
             cart_item.save()
 
     cart_items, subtotal, tax, total = calculate_cart_totals(cart)
-    item_total = cart_item.product.price * cart_item.quantity
+    item_total = cart_item.product.final_price * cart_item.quantity
 
     return JsonResponse({
         'success': True,
@@ -205,3 +205,12 @@ def register(request):
     return render(request, 'register.html')
 def about(request):
     return render(request, 'about.html')
+
+def sales(request):
+    products = Product.objects.filter(discount__gt=0).order_by('-discount')
+
+    context = {
+        'products': products,
+    }
+
+    return render(request, 'sales.html', context)

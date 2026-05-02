@@ -30,11 +30,23 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock_quantity = models.PositiveIntegerField(default=0)
     image = models.CharField(max_length=255, blank=True, null=True)
+    discount = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def final_price(self):
+        if self.discount > 0:
+            return self.price - (self.price * self.discount / 100)
+        return self.price
+
+    @property
+    def has_discount(self):
+        return self.discount > 0
+
     def __str__(self):
         return self.name
+    
 
 
 class Cart(models.Model):

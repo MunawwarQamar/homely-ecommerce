@@ -21,78 +21,82 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
-  <div class="container">
-    <a class="navbar-brand" href="/">Homely</a>
+      <div class="container">
+        <a class="navbar-brand" href="/">Homely</a>
 
-    <button
-      class="navbar-toggler border-0 shadow-none"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#mainNavbar"
-    >
-      <i class="bi bi-list fs-2"></i>
-    </button>
+        <button
+          class="navbar-toggler border-0 shadow-none"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+        >
+          <i class="bi bi-list fs-2"></i>
+        </button>
 
-    <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav mx-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="/">Shop</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Sales</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">New</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/about/">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">All Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Contact Us</a>
-        </li>
-      </ul>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Shop</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/sales/">Sales</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">New</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">About Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">All Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact Us</a>
+            </li>
+          </ul>
 
-      <div class="d-flex align-items-center nav-actions">
-        <a href="#"><i class="bi bi-search"></i></a>
+          <div class="d-flex align-items-center nav-actions">
+            <a href="#"><i class="bi bi-search"></i></a>
 
-        {% if request.session.user_id %}
-          <a href="/cart/"><i class="bi bi-cart3"></i> Cart</a>
-          <a href="/logout/"><i class="bi bi-box-arrow-right"></i></a>
-        {% else %}
-          <a href="/login/"><i class="bi bi-person"></i></a>
-        {% endif %}
+            {% if request.session.user_id %}
+            <a href="/cart/"><i class="bi bi-cart3"></i> Cart</a>
+            <a href="/logout/"><i class="bi bi-box-arrow-right"></i></a>
+            {% else %}
+            <a href="/login/"><i class="bi bi-person"></i></a>
+            {% endif %}
 
-        <a href="#"><i class="bi bi-globe2"></i> EUR</a>
+            <a href="#"><i class="bi bi-globe2"></i> EUR</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</nav>
+    </nav>
 
-   <main class="page-section">
-    {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-               <div class="alert 
+    <main class="page-section">
+      {% if messages %}
+      <div class="container mt-3">
+        {% for message in messages %}
+        <div
+          class="alert 
     {% if message.tags == 'error' %}alert-danger
     {% else %}alert-{{ message.tags }}
     {% endif %}
-    alert-dismissible fade show" role="alert">
-    
-    {{ message }}
-    
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-</div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    alert-dismissible fade show"
+          role="alert"
+        >
+          {{ message }}
 
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
-</main>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+          ></button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="container">{% block content %}{% endblock %}</div>
+    </main>
 
     <footer class="footer-custom">
       <div class="container">
