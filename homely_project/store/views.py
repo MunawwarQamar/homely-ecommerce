@@ -223,3 +223,12 @@ def all_products(request):
     }
 
     return render(request, 'all_products.html', context)
+
+def new_products(request):
+    products = Product.objects.all().order_by('-created_at')[:8]
+
+    context = {
+        'products': products,
+    }
+
+    return render(request, 'new_products.html', context)
