@@ -19,6 +19,7 @@
 
     {% block extra_css %}{% endblock %}
   </head>
+
   <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
       <div class="container">
@@ -36,22 +37,27 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
           <ul class="navbar-nav mx-auto">
             <li class="nav-item">
-              <a class="nav-link active" href="/">Shop</a>
+              <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Shop</a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="/sales/">Sales</a>
+              <a class="nav-link {% if request.path == '/new/' %}active{% endif %}" href="/new/">New</a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="#">New</a>
+              <a class="nav-link nav-sales {% if request.path == '/sales/' %}active{% endif %}" href="/sales/">Sales</a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="/about/">About Us</a>
+              <a class="nav-link {% if request.path == '/all-products/' %}active{% endif %}" href="/all-products/">All Products</a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="#">All Products</a>
+              <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="/about/">About</a>
             </li>
+
             <li class="nav-item">
-              <a class="nav-link" href="#">Contact Us</a>
+              <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="/contact/">Contact</a>
             </li>
           </ul>
 
@@ -77,10 +83,10 @@
         {% for message in messages %}
         <div
           class="alert 
-    {% if message.tags == 'error' %}alert-danger
-    {% else %}alert-{{ message.tags }}
-    {% endif %}
-    alert-dismissible fade show"
+          {% if message.tags == 'error' %}alert-danger
+          {% else %}alert-{{ message.tags }}
+          {% endif %}
+          alert-dismissible fade show"
           role="alert"
         >
           {{ message }}
@@ -133,7 +139,7 @@
               <li><a href="#">Help</a></li>
               <li><a href="#">Orders</a></li>
               <li><a href="#">Returns</a></li>
-              <li><a href="#">Contact</a></li>
+              <li><a href="/contact/">Contact</a></li>
             </ul>
           </div>
         </div>

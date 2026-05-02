@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Sales{% endblock %}
+{% block title %}All Products{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/products.css' %}" />
@@ -14,7 +14,7 @@
       <i class="bi bi-chevron-left"></i>
       Back
     </a>
-    <h1 class="products-title">SALES</h1>
+    <h1 class="products-title">ALL PRODUCTS</h1>
   </div>
 
   <div class="row g-4">
@@ -23,9 +23,11 @@
       <a href="/product/{{ product.id }}/" class="product-card-link">
         <div class="product-card">
           <div class="product-image-wrapper">
+            {% if product.has_discount %}
             <span class="sale-badge image-sale-badge">
               {{ product.discount }}% OFF
             </span>
+            {% endif %}
 
             {% if product.image %}
             <img
@@ -43,10 +45,14 @@
           <div class="product-card-body">
             <h3 class="product-name">{{ product.name }}</h3>
 
+            {% if product.has_discount %}
             <div class="product-price discount-price-row">
               <span class="old-price">${{ product.price|floatformat:2 }}</span>
               <span class="new-price">${{ product.final_price|floatformat:2 }}</span>
             </div>
+            {% else %}
+            <p class="product-price">${{ product.price|floatformat:2 }}</p>
+            {% endif %}
           </div>
         </div>
       </a>
@@ -55,7 +61,7 @@
     {% empty %}
     <div class="col-12">
       <div class="empty-products-box">
-        <p>No products on sale right now.</p>
+        <p>No products found.</p>
       </div>
     </div>
     {% endfor %}

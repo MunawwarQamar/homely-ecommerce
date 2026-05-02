@@ -214,3 +214,12 @@ def sales(request):
     }
 
     return render(request, 'sales.html', context)
+
+def all_products(request):
+    products = Product.objects.all().order_by('-created_at')
+
+    context = {
+        'products': products,
+    }
+
+    return render(request, 'all_products.html', context)
