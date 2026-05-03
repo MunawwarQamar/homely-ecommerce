@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="contact-page">
+  <section class="contact-hero">
+    <h1 class="contact-title">Contact Us</h1>
+    <p class="contact-subtitle">
+      Have a question or need help? Send us a message and we’ll get back to you soon.
+    </p>
+  </section>
+
+  <div class="contact-card">
+    <div class="row g-4">
+      <div class="col-lg-7">
+        <form method="POST" class="contact-form">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label class="form-label contact-label">Name</label>
+            <input type="text" name="name" class="form-control contact-input" placeholder="Enter your name" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label contact-label">Email</label>
+            <input type="email" name="email" class="form-control contact-input" placeholder="Enter your email" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label contact-label">Subject</label>
+            <input type="text" name="subject" class="form-control contact-input" placeholder="What is this about?" />
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label contact-label">Message</label>
+            <textarea name="message" rows="5" class="form-control contact-input" placeholder="Write your message here"></textarea>
+          </div>
+
+          <button type="submit" class="contact-btn">Send Message</button>
+        </form>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="contact-info-box">
+          <h3>Get in touch</h3>
+          <p class="contact-info-text">
+            We usually respond within 24 hours.
+          </p>
+
+          <div class="contact-info-item">
+            <i class="bi bi-envelope"></i>
+            <span>munawwarbaba2004@gmail.com</span>
+          </div>
+
+          <div class="contact-info-item">
+            <i class="bi bi-telephone"></i>
+            <span>+972 597 351 469</span>
+          </div>
+
+          <div class="contact-info-item">
+            <i class="bi bi-geo-alt"></i>
+            <span>Ramallah, Palestine</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

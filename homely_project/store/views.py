@@ -3,6 +3,8 @@ from decimal import Decimal
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Category, Product, User, Cart, CartItem
+from django.conf import settings
+from django.core.mail import send_mail
 
 def calculate_cart_totals(cart):
     cart_items = CartItem.objects.filter(cart=cart)
@@ -125,7 +127,7 @@ def cart(request):
         cart_items = CartItem.objects.filter(cart=cart)
 
         for item in cart_items:
-            item.item_total = item.product.price * item.quantity
+            item.item_total = item.product.final_price * item.quantity
             subtotal += item.item_total
 
     tax = subtotal * Decimal('0.10')
@@ -139,6 +141,7 @@ def cart(request):
     }
 
     return render(request, 'cart.html', context)
+
 def login_view(request):
     if 'user_id' in request.session:
         return redirect('/')
@@ -232,3 +235,65 @@ def new_products(request):
     }
 
     return render(request, 'new_products.html', context)
+
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        if not name or not email or not subject or not message:
+            messages.error(request, 'Please fill in all fields.')
+            return redirect('/contact/')
+
+        admin_subject = f'New Contact Message: {subject}'
+        admin_message = f"""
+You received a new message from Homely Contact Us page.
+
+Name: {name}
+Email: {email}
+Subject: {subject}
+
+Message:
+{message}
+"""
+
+        user_subject = 'We received your message - Homely'
+        user_message = f"""
+Hi {name},
+
+Thank you for contacting Homely.
+
+We received your message and our team will get back to you as soon as possible.
+
+Best regards,
+Homely Team
+"""
+
+        try:
+            send_mail(
+                admin_subject,
+                admin_message,
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.ADMIN_EMAIL],
+                fail_silently=False,
+            )
+
+            send_mail(
+                user_subject,
+                user_message,
+                settings.DEFAULT_FROM_EMAIL,
+                [email],
+                fail_silently=False,
+            )
+
+            messages.success(request, 'Your message has been sent successfully.')
+            return redirect('/contact/')
+
+        except Exception as e:
+            print("EMAIL ERROR:", e)
+            messages.error(request, f'Something went wrong: {e}')
+            return redirect('/contact/')
+
+    return render(request, 'contact.html')
