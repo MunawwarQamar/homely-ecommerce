@@ -5,6 +5,7 @@ from django.contrib import messages
 from .models import Category, Product, User, Cart, CartItem
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db.models import Q
 
 def calculate_cart_totals(cart):
     cart_items = CartItem.objects.filter(cart=cart)
@@ -297,3 +298,22 @@ Homely Team
             return redirect('/contact/')
 
     return render(request, 'contact.html')
+
+def search_products(request):
+    query = request.GET.get('q', '').strip()
+
+    products = Product.objects.none()
+
+    if query:
+        products = Product.objects.filter(
+            Q(name__icontains=query) |
+            Q(description__icontains=query) |
+            Q(category__name__icontains=query)
+        ).order_by('-created_at')
+
+    context = {
+        'products': products,
+        'query': query,
+    }
+
+    return render(request, 'search_results.html', context)
