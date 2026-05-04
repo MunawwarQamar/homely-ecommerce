@@ -89,7 +89,7 @@ Returns product data in JSON format.
 
 ### 1. Clone the project
 ```
-git clone https://github.com/your-username/homely.git
+https://github.com/MunawwarQamar/homely-ecommerce.git
 cd homely
 ```
 
