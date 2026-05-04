@@ -85,25 +85,6 @@ Returns product data in JSON format.
 
 ---
 
-## 📁 Project Structure
-
-```
-homely/
-├── store/
-│   ├── models.py
-│   ├── views.py
-│   ├── urls.py
-│   ├── templates/
-│   └── static/
-├── media/
-├── Screenshots/
-├── manage.py
-├── requirements.txt
-└── README.md
-```
-
----
-
 ## ⚙️ Setup & Installation
 
 ### 1. Clone the project
@@ -121,11 +102,6 @@ env\Scripts\activate
 ### 3. Install dependencies
 ```
 pip install -r requirements.txt
-```
-
-> If you don't have requirements.txt:
-```
-pip freeze > requirements.txt
 ```
 
 ### 4. Run migrations
@@ -175,7 +151,7 @@ This project was built as a **solo educational project** during AXSOS Academy Bo
 ## 👩‍💻 Author
 
 **Munawwar Qamar**  
-Frontend & Full Stack Developer
+Full Stack Developer
 
 ---
 
