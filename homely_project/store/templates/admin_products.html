@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Products{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+  <div class="admin-header">
+    <div>
+      <h1>Products</h1>
+      <p>View, edit, and archive products currently available in Homely.</p>
+    </div>
+
+    <a href="/admin-dashboard/products/add/" class="admin-primary-btn">
+      <i class="bi bi-plus-lg"></i>
+      Add Product
+    </a>
+  </div>
+
+  <div class="admin-table-box">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Discount</th>
+          <th>Final Price</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>
+            <div class="admin-product-cell">
+              <div class="admin-product-img">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" />
+                {% else %}
+                <i class="bi bi-image"></i>
+                {% endif %}
+              </div>
+              <span>{{ product.name }}</span>
+            </div>
+          </td>
+
+          <td>{{ product.category.name }}</td>
+          <td>${{ product.price|floatformat:2 }}</td>
+          <td>{{ product.discount }}%</td>
+          <td>${{ product.final_price|floatformat:2 }}</td>
+          <td>{{ product.stock_quantity }}</td>
+
+          <td>
+            <div class="admin-actions-cell">
+              <a href="/admin-dashboard/products/{{ product.id }}/edit/" class="admin-edit-btn">
+                Edit
+              </a>
+
+              <a
+                href="/admin-dashboard/products/{{ product.id }}/archive/"
+                class="admin-archive-btn"
+                onclick="return confirm('Are you sure you want to archive this product?');"
+              >
+                Archive
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        {% empty %}
+        <tr>
+          <td colspan="7" class="admin-empty">No products found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

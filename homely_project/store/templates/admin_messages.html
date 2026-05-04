@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Messages{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+  <div class="admin-header">
+    <div>
+      <h1>Contact Messages</h1>
+      <p>Manage customer messages sent through the Contact Us page.</p>
+    </div>
+  </div>
+
+  <div class="admin-messages-list">
+    {% for message in contact_messages %}
+    <div class="admin-message-card {% if not message.is_read %}unread{% endif %}">
+      <div class="admin-message-header">
+        <div>
+          <div class="admin-message-subject-row">
+            <h3>{{ message.subject }}</h3>
+
+            {% if not message.is_read %}
+            <span class="message-badge unread-badge">Unread</span>
+            {% else %}
+            <span class="message-badge read-badge">Read</span>
+            {% endif %}
+          </div>
+
+          <div class="admin-message-sender">
+            <span><i class="bi bi-person"></i> {{ message.name }}</span>
+            <span><i class="bi bi-envelope"></i> {{ message.email }}</span>
+          </div>
+        </div>
+
+        <div class="admin-message-date">
+          <i class="bi bi-clock"></i>
+          {{ message.created_at|date:"M d, Y - H:i" }}
+        </div>
+      </div>
+
+      <div class="admin-message-body-box">
+        {{ message.message }}
+      </div>
+
+      {% if not message.is_read %}
+      <div class="admin-message-actions">
+        <a href="/admin-dashboard/messages/{{ message.id }}/read/" class="admin-read-btn">
+          <i class="bi bi-check2"></i>
+          Mark as read
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+    {% empty %}
+    <div class="admin-empty-box">
+      <i class="bi bi-inbox"></i>
+      <h3>No contact messages yet</h3>
+      <p>Messages from customers will appear here.</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

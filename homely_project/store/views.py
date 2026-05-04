@@ -2,10 +2,32 @@ from django.http import JsonResponse
 from decimal import Decimal
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Category, Product, User, Cart, CartItem
+from .models import Category, Product, User, Cart, CartItem, ContactMessage
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db.models import Q
+from django.contrib.auth.hashers import make_password, check_password
+from django.core.exceptions import ValidationError
+
+def get_logged_in_user(request):
+    if 'user_id' not in request.session:
+        return None
+    return User.objects.filter(id=request.session['user_id']).first()
+
+
+def admin_required(request):
+    user = get_logged_in_user(request)
+
+    if not user:
+        messages.error(request, 'Please login first.')
+        return None, redirect('/login/')
+
+    if not user.is_admin:
+        messages.error(request, 'You are not allowed to access this page.')
+        return None, redirect('/')
+
+    return user, None
+
 
 def calculate_cart_totals(cart):
     cart_items = CartItem.objects.filter(cart=cart)
@@ -20,6 +42,32 @@ def calculate_cart_totals(cart):
 
     return cart_items, subtotal, tax, total
 
+
+def home(request):
+    return render(request, 'home.html')
+
+
+def products_by_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    products = Product.objects.filter(category=category, is_archived=False)
+
+    context = {
+        'category': category,
+        'products': products,
+    }
+
+    return render(request, 'products.html', context)
+
+
+def product_details(request, product_id):
+    product = get_object_or_404(Product, id=product_id, is_archived=False)
+
+    context = {
+        'product': product,
+    }
+
+    return render(request, 'product_details.html', context)
+
 def add_to_cart(request, product_id):
     if 'user_id' not in request.session:
         messages.error(request, 'You need to log in first.')
@@ -29,7 +77,6 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
     cart, created = Cart.objects.get_or_create(user=user)
-
     cart_item = CartItem.objects.filter(cart=cart, product=product).first()
 
     if cart_item:
@@ -40,6 +87,7 @@ def add_to_cart(request, product_id):
 
     messages.success(request, 'Product added to cart successfully.')
     return redirect(f'/product/{product.id}/')
+
 
 def remove_from_cart(request, item_id):
     if 'user_id' not in request.session:
@@ -88,31 +136,6 @@ def update_cart_item(request, item_id, action):
     })
 
 
-def home(request):
-    return render(request, 'home.html')
-
-
-def products_by_category(request, category_id):
-    category = get_object_or_404(Category, id=category_id)
-    products = Product.objects.filter(category=category)
-
-    context = {
-        'category': category,
-        'products': products,
-    }
-    return render(request, 'products.html', context)
-
-
-def product_details(request, product_id):
-    product = get_object_or_404(Product, id=product_id)
-
-    context = {
-        'product': product,
-    }
-    return render(request, 'product_details.html', context)
-
-
-
 def cart(request):
     if 'user_id' not in request.session:
         messages.error(request, 'You need to log in first.')
@@ -143,6 +166,7 @@ def cart(request):
 
     return render(request, 'cart.html', context)
 
+
 def login_view(request):
     if 'user_id' in request.session:
         return redirect('/')
@@ -155,12 +179,19 @@ def login_view(request):
             messages.error(request, 'Email and password are required.')
             return redirect('/login/')
 
-        user = User.objects.filter(email=email, password=password).first()
+        user = User.objects.filter(email=email).first()
 
-        if user:
+        if user and check_password(password, user.password):
+            
             request.session['user_id'] = user.id
             request.session['user_name'] = user.first_name
+            request.session['user_is_admin'] = user.is_admin
+
             messages.success(request, f'Welcome back, {user.first_name}!')
+
+            if user.is_admin:
+                return redirect('/admin-dashboard/')
+
             return redirect('/')
 
         messages.error(request, 'Invalid email or password.')
@@ -168,10 +199,12 @@ def login_view(request):
 
     return render(request, 'login.html')
 
+
 def logout_view(request):
     request.session.clear()
     messages.success(request, 'You have been logged out successfully.')
     return redirect('/login/')
+
 
 def register(request):
     if 'user_id' in request.session:
@@ -200,18 +233,21 @@ def register(request):
             first_name=first_name,
             last_name=last_name,
             email=email,
-            password=password
+            password=make_password(password)
         )
 
         messages.success(request, 'Your account has been created successfully. Please log in.')
         return redirect('/login/')
 
     return render(request, 'register.html')
+
+
 def about(request):
     return render(request, 'about.html')
 
+
 def sales(request):
-    products = Product.objects.filter(discount__gt=0).order_by('-discount')
+    products = Product.objects.filter(discount__gt=0, is_archived=False).order_by('-discount')
 
     context = {
         'products': products,
@@ -219,8 +255,9 @@ def sales(request):
 
     return render(request, 'sales.html', context)
 
+
 def all_products(request):
-    products = Product.objects.all().order_by('-created_at')
+    products = Product.objects.filter(is_archived=False).order_by('-created_at')
 
     context = {
         'products': products,
@@ -229,7 +266,7 @@ def all_products(request):
     return render(request, 'all_products.html', context)
 
 def new_products(request):
-    products = Product.objects.all().order_by('-created_at')[:8]
+    products = Product.objects.filter(is_archived=False).order_by('-created_at')[:8]
 
     context = {
         'products': products,
@@ -247,6 +284,13 @@ def contact(request):
         if not name or not email or not subject or not message:
             messages.error(request, 'Please fill in all fields.')
             return redirect('/contact/')
+
+        ContactMessage.objects.create(
+            name=name,
+            email=email,
+            subject=subject,
+            message=message
+        )
 
         admin_subject = f'New Contact Message: {subject}'
         admin_message = f"""
@@ -301,14 +345,14 @@ Homely Team
 
 def search_products(request):
     query = request.GET.get('q', '').strip()
-
     products = Product.objects.none()
 
     if query:
         products = Product.objects.filter(
             Q(name__icontains=query) |
             Q(description__icontains=query) |
-            Q(category__name__icontains=query)
+            Q(category__name__icontains=query),
+            is_archived=False
         ).order_by('-created_at')
 
     context = {
@@ -317,3 +361,197 @@ def search_products(request):
     }
 
     return render(request, 'search_results.html', context)
+
+
+def products_api(request):
+    products = Product.objects.filter(is_archived=False).order_by('-created_at')
+    data = []
+
+    for product in products:
+        data.append({
+            'id': product.id,
+            'name': product.name,
+            'description': product.description,
+            'category': product.category.name,
+            'price': float(product.price),
+            'discount': product.discount,
+            'final_price': float(product.final_price),
+            'stock_quantity': product.stock_quantity,
+            'image': product.image,
+        })
+
+    return JsonResponse({
+        'products': data
+    })
+
+
+def admin_dashboard(request):
+    user, redirect_response = admin_required(request)
+    if redirect_response:
+        return redirect_response
+
+    total_products = Product.objects.filter(is_archived=False).count()
+    total_messages = ContactMessage.objects.count()
+    unread_messages = ContactMessage.objects.filter(is_read=False).count()
+    total_categories = Category.objects.count()
+
+    context = {
+        'total_products': total_products,
+        'total_messages': total_messages,
+        'unread_messages': unread_messages,
+        'total_categories': total_categories,
+    }
+
+    return render(request, 'admin_dashboard.html', context)
+
+
+def admin_products(request):
+    user, redirect_response = admin_required(request)
+    if redirect_response:
+        return redirect_response
+
+    products = Product.objects.filter(is_archived=False).order_by('-created_at')
+
+    context = {
+        'products': products,
+    }
+
+    return render(request, 'admin_products.html', context)
+
+
+
+def admin_edit_product(request, product_id):
+    user, redirect_response = admin_required(request)
+    if redirect_response:
+        return redirect_response
+
+    product = get_object_or_404(Product, id=product_id)
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        category_id = request.POST.get('category')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        stock_quantity = request.POST.get('stock_quantity')
+        image = request.FILES.get('image')
+        discount = request.POST.get('discount')
+
+        if not category_id or not name or not description or not price or not stock_quantity:
+            messages.error(request, 'Please fill in all required fields.')
+            return redirect(f'/admin-dashboard/products/{product.id}/edit/')
+
+        product.category = get_object_or_404(Category, id=category_id)
+        product.name = name
+        product.description = description
+        product.price = price
+        product.stock_quantity = stock_quantity
+        product.discount = discount or 0
+
+        if image:
+            product.image = image
+
+        try:
+            product.full_clean()
+            product.save()
+
+            messages.success(request, 'Product updated successfully.')
+            return redirect('/admin-dashboard/products/')
+
+        except ValidationError as e:
+            messages.error(request, e.messages[0])
+            return redirect(f'/admin-dashboard/products/{product.id}/edit/')
+
+    context = {
+        'product': product,
+        'categories': categories,
+    }
+
+    return render(request, 'admin_edit_product.html', context)
+
+
+def admin_add_product(request):
+    user, redirect_response = admin_required(request)
+    if redirect_response:
+        return redirect_response
+
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        category_id = request.POST.get('category')
+        name = request.POST.get('name')
+        description = request.POST.get('description')
+        price = request.POST.get('price')
+        stock_quantity = request.POST.get('stock_quantity')
+        image = request.FILES.get('image')
+        discount = request.POST.get('discount')
+
+        if not category_id or not name or not description or not price or not stock_quantity:
+            messages.error(request, 'Please fill in all required fields.')
+            return redirect('/admin-dashboard/products/add/')
+
+        try:
+            product = Product(
+                category=get_object_or_404(Category, id=category_id),
+                name=name,
+                description=description,
+                price=price,
+                stock_quantity=stock_quantity,
+                image=image,
+                discount=discount or 0
+            )
+
+            product.full_clean()
+            product.save()
+
+            messages.success(request, 'Product added successfully.')
+            return redirect('/admin-dashboard/products/')
+
+        except ValidationError as e:
+            messages.error(request, e.messages[0])
+            return redirect('/admin-dashboard/products/add/')
+
+    context = {
+        'categories': categories,
+    }
+
+    return render(request, 'admin_add_product.html', context)
+
+def admin_archive_product(request, product_id):
+    user, redirect_response = admin_required(request)
+    if redirect_response:
+        return redirect_response
+
+    product = get_object_or_404(Product, id=product_id)
+    product.is_archived = True
+    product.save()
+
+    messages.success(request, 'Product archived successfully.')
+    return redirect('/admin-dashboard/products/')
+
+
+def admin_messages(request):
+    user, redirect_response = admin_required(request)
+    if redirect_response:
+        return redirect_response
+
+    contact_messages = ContactMessage.objects.all().order_by('-created_at')
+
+    context = {
+        'contact_messages': contact_messages,
+    }
+
+    return render(request, 'admin_messages.html', context)
+
+
+def admin_mark_message_read(request, message_id):
+    user, redirect_response = admin_required(request)
+    if redirect_response:
+        return redirect_response
+
+    contact_message = get_object_or_404(ContactMessage, id=message_id)
+    contact_message.is_read = True
+    contact_message.save()
+
+    messages.success(request, 'Message marked as read.')
+    return redirect('/admin-dashboard/messages/')

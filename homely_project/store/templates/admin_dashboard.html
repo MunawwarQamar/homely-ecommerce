@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+  <div class="admin-header">
+    <div>
+      <h1>Admin Dashboard</h1>
+      <p>Manage Homely products and customer messages.</p>
+    </div>
+  </div>
+
+  <div class="admin-stats-grid">
+    <div class="admin-stat-card">
+      <span>Products</span>
+      <h2>{{ total_products }}</h2>
+    </div>
+
+    <div class="admin-stat-card">
+      <span>Categories</span>
+      <h2>{{ total_categories }}</h2>
+    </div>
+
+    <div class="admin-stat-card">
+      <span>Messages</span>
+      <h2>{{ total_messages }}</h2>
+    </div>
+
+    <div class="admin-stat-card">
+      <span>Unread Messages</span>
+      <h2>{{ unread_messages }}</h2>
+    </div>
+  </div>
+
+  <div class="admin-actions-grid">
+    <a href="/admin-dashboard/products/" class="admin-action-card">
+      <i class="bi bi-box-seam"></i>
+      <h3>Manage Products</h3>
+      <p>View and add products.</p>
+    </a>
+
+    <a href="/admin-dashboard/products/add/" class="admin-action-card">
+      <i class="bi bi-plus-circle"></i>
+      <h3>Add Product</h3>
+      <p>Add a new product to the store.</p>
+    </a>
+
+    <a href="/admin-dashboard/messages/" class="admin-action-card">
+      <i class="bi bi-envelope"></i>
+      <h3>Contact Messages</h3>
+      <p>Read customer inquiries.</p>
+    </a>
+  </div>
+</div>
+{% endblock %}

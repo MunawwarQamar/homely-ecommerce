@@ -23,7 +23,12 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-custom">
       <div class="container">
-        <a class="navbar-brand" href="/">Homely</a>
+        <a
+          class="navbar-brand"
+          href="{% if request.session.user_is_admin %}/admin-dashboard/{% else %}/{% endif %}"
+        >
+          Homely
+        </a>
 
         <button
           class="navbar-toggler border-0 shadow-none"
@@ -35,78 +40,131 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
+          {% if request.session.user_is_admin %}
+          <ul class="navbar-nav mx-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == '/admin-dashboard/' %}active{% endif %}"
+                href="/admin-dashboard/"
+              >
+                Dashboard
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == '/admin-dashboard/products/' %}active{% endif %}"
+                href="/admin-dashboard/products/"
+              >
+                Products
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == '/admin-dashboard/products/add/' %}active{% endif %}"
+                href="/admin-dashboard/products/add/"
+              >
+                Add Product
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == '/admin-dashboard/messages/' %}active{% endif %}"
+                href="/admin-dashboard/messages/"
+              >
+                Messages
+              </a>
+            </li>
+          </ul>
+          {% else %}
           <ul class="navbar-nav mx-auto">
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/' %}active{% endif %}"
                 href="/"
-                >Shop</a
               >
+                Shop
+              </a>
             </li>
 
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/new/' %}active{% endif %}"
                 href="/new/"
-                >New</a
               >
+                New
+              </a>
             </li>
 
             <li class="nav-item">
               <a
-                class="nav-link nav-sales {% if request.path == '/sales/' %}active{% endif %}"
+                class="nav-link {% if request.path == '/sales/' %}active{% endif %}"
                 href="/sales/"
-                >Sales</a
               >
+                Sales
+              </a>
             </li>
 
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/all-products/' %}active{% endif %}"
                 href="/all-products/"
-                >All Products</a
               >
+                All Products
+              </a>
             </li>
 
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/about/' %}active{% endif %}"
                 href="/about/"
-                >About</a
               >
+                About
+              </a>
             </li>
 
             <li class="nav-item">
               <a
                 class="nav-link {% if request.path == '/contact/' %}active{% endif %}"
                 href="/contact/"
-                >Contact</a
               >
+                Contact
+              </a>
             </li>
           </ul>
+          {% endif %}
 
           <div class="d-flex align-items-center nav-actions">
-            <form action="/search/" method="GET" class="nav-search-form">
-              <input
-                type="text"
-                name="q"
-                class="nav-search-input"
-                placeholder="Search products..."
-                value="{{ request.GET.q }}"
-              />
-              <button type="submit" class="nav-search-btn">
-                <i class="bi bi-search"></i>
-              </button>
-            </form>
-
-            {% if request.session.user_id %}
-            <a href="/cart/"><i class="bi bi-cart3"></i> Cart</a>
-            <a href="/logout/"><i class="bi bi-box-arrow-right"></i></a>
+            {% if request.session.user_is_admin %}
+              <a href="/logout/">
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+              </a>
             {% else %}
-            <a href="/login/"><i class="bi bi-person"></i></a>
-            {% endif %}
+              <form action="/search/" method="GET" class="nav-search-form">
+                <input
+                  type="text"
+                  name="q"
+                  class="nav-search-input"
+                  placeholder="Search products..."
+                  value="{{ request.GET.q }}"
+                />
+                <button type="submit" class="nav-search-btn">
+                  <i class="bi bi-search"></i>
+                </button>
+              </form>
 
-            <a href="#"><i class="bi bi-globe2"></i> EUR</a>
+              {% if request.session.user_id %}
+                <a href="/cart/"><i class="bi bi-cart3"></i> Cart</a>
+                <a href="/logout/"><i class="bi bi-box-arrow-right"></i></a>
+              {% else %}
+                <a href="/login/"><i class="bi bi-person"></i></a>
+              {% endif %}
+
+              <a href="#"><i class="bi bi-globe2"></i> EUR</a>
+            {% endif %}
           </div>
         </div>
       </div>
