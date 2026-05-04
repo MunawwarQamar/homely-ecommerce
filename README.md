@@ -1,115 +1,184 @@
-# 🛒 Homely - E-commerce Web Application
+# 🏠 Homely | E-Commerce Web Application
 
-Homely is a full-stack e-commerce web application built using Django as part of a **solo project** during the Full Stack Bootcamp at **AXSOS Academy**.
-
-The goal of this project is to simulate a real-world online store with both **user-side functionality** and a fully functional **admin dashboard**, focusing on clean UI/UX, security, and dynamic interactions.
+> A modern full-stack e-commerce platform for home products, built using Django as a **solo project** during the Full Stack Bootcamp at **AXSOS Academy**.
 
 ---
 
-## 🚀 Features
+## 🚀 Project Overview
 
-### 👤 User Features
-- User registration and login system
+Homely is a complete web-based e-commerce system that simulates a real-world online store experience.
+
+The platform allows users to browse and search products, manage their cart, and contact the store, while providing admins with a powerful dashboard to manage products, monitor messages, and control store content efficiently.
+
+This project focuses on **clean UI/UX, real-world functionality, and secure system design**.
+
+---
+
+## ✨ Key Features
+
+### 👤 User Side
+- User registration & login (session-based authentication)
 - Browse products by category
-- Search for products
-- View product details
-- Add to cart and update cart dynamically (AJAX)
-- Contact form with email confirmation
+- Product search functionality
+- Product details page
+- Shopping cart with real-time updates (AJAX)
+- Contact form with email integration
 
 ---
 
-### 🛠️ Admin Features
-- Admin dashboard with statistics
-- Add new products
-- Edit existing products
-- Archive products (soft delete)
-- View and manage contact messages
+### 🛠️ Admin Dashboard
+- Admin-only dashboard access
+- Add / edit products
+- Upload product images
+- Archive products (soft delete instead of permanent removal)
+- View customer messages
 - Mark messages as read
 
 ---
 
 ## 🧠 Technologies Used
 
-- Backend: Django (Python)
-- Database: MySQL
-- Frontend: HTML, CSS, Bootstrap
-- Dynamic Updates: AJAX (Fetch API)
-- Authentication: Session-based auth + password hashing
-- Email Integration: SMTP (Gmail)
+| Technology | Purpose |
+|-----------|--------|
+| Django (Python) | Backend framework |
+| MySQL | Database |
+| Bootstrap 5 | Responsive UI |
+| JavaScript + AJAX | Dynamic interactions |
+| Pillow | Image handling |
+| SMTP (Gmail) | Email system |
+| Git & GitHub | Version control |
 
 ---
 
-## 🔐 Security Features
+## 🔐 Security & Validation
 
 - CSRF Protection
-- Password Hashing
-- Form Validation
-- Image Upload Validation (only images allowed)
+- Password hashing
+- Server-side validation
+- Image file validation (only images allowed)
+- Role-based access control (Admin vs User)
+- SQL Injection protection (Django ORM)
 
 ---
 
 ## 📡 API Endpoint
 
+```
 /api/products/
+```
 
-Returns all products in JSON format.
-
----
-
-## 📸 Screenshots
-
-(Add your screenshots here inside a folder named screenshots)
-
-Example:
-![Home](screenshots/home.png)
-![Products](screenshots/products.png)
-![Cart](screenshots/cart.png)
-![Admin](screenshots/admin.png)
-![Messages](screenshots/messages.png)
+Returns product data in JSON format.
 
 ---
 
-## ⚙️ Installation
+## 🖼️ Screenshots
 
-1. Clone the repository:
+> Add your screenshots inside a folder named `Screenshots`
+
+| Home | Products | Cart |
+|------|---------|------|
+| ![Home](Screenshots/home.png) | ![Products](Screenshots/products.png) | ![Cart](Screenshots/cart.png) |
+
+| Admin Dashboard | Admin Products | Messages |
+|-----------------|---------------|----------|
+| ![Admin](Screenshots/admin-dashboard.png) | ![Products](Screenshots/admin-products.png) | ![Messages](Screenshots/messages.png) |
+
+---
+
+## 📁 Project Structure
+
+```
+homely/
+├── store/
+│   ├── models.py
+│   ├── views.py
+│   ├── urls.py
+│   ├── templates/
+│   └── static/
+├── media/
+├── Screenshots/
+├── manage.py
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## ⚙️ Setup & Installation
+
+### 1. Clone the project
+```
 git clone https://github.com/your-username/homely.git
 cd homely
+```
 
-2. Create virtual environment:
-python -m venv venv
-venv\Scripts\activate
+### 2. Create virtual environment
+```
+python -m venv env
+env\Scripts\activate
+```
 
-3. Install dependencies:
+### 3. Install dependencies
+```
 pip install -r requirements.txt
+```
 
-4. Run migrations:
+> If you don't have requirements.txt:
+```
+pip freeze > requirements.txt
+```
+
+### 4. Run migrations
+```
 python manage.py migrate
+```
 
-5. Run server:
+### 5. Run server
+```
 python manage.py runserver
+```
+
+---
+
+## 👤 Roles
+
+### User
+- Can browse, search, and shop
+
+### Admin
+- Can manage products and messages through dashboard
 
 ---
 
 ## 🎯 Project Purpose
 
-This project was developed as a **solo educational project** during the AXSOS Full Stack Bootcamp.
+This project was built as a **solo educational project** during AXSOS Academy Bootcamp to demonstrate:
 
-It demonstrates:
 - Full-stack development skills
-- Real-world system design
-- UI/UX implementation
+- Real-world system implementation
+- Clean UI/UX design
 - Admin vs User role management
+
+---
+
+## 🚧 Future Improvements
+
+- Payment integration
+- Order tracking system
+- Wishlist feature
+- Product reviews
+- Advanced filters
+- Deployment on AWS
 
 ---
 
 ## 👩‍💻 Author
 
-Munawwar Qamar  
+**Munawwar Qamar**  
 Frontend & Full Stack Developer
 
 ---
 
-## ⭐ Notes
+## 📄 Notes
 
-- This project is for educational purposes.
-- Future improvements may include payment integration and order tracking.
+This project is built for educational purposes and showcases practical implementation of an e-commerce system.
