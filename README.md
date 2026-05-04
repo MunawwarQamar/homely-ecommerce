@@ -73,8 +73,6 @@ Returns product data in JSON format.
 
 ## 🖼️ Screenshots
 
-> Add your screenshots inside a folder named `Screenshots`
-
 | Home | Products | Cart |
 |------|---------|------|
 | ![Home](Screenshots/home.png) | ![Products](Screenshots/products.png) | ![Cart](Screenshots/cart.png) |
@@ -90,7 +88,7 @@ Returns product data in JSON format.
 ### 1. Clone the project
 ```
 https://github.com/MunawwarQamar/homely-ecommerce.git
-cd homely
+cd homely-project
 ```
 
 ### 2. Create virtual environment
