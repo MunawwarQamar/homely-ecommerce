@@ -132,21 +132,6 @@ python manage.py runserver
 
 ---
 
-# 🎯 Project Purpose
-
-This project was developed as a solo educational project during the **AXSOS Academy Full Stack Bootcamp**.
-
-The goal of the project was to demonstrate:
-
-- Full-stack web development skills
-- Backend and database integration
-- Real-world e-commerce functionality
-- Clean UI/UX implementation
-- Authentication and authorization systems
-- Admin dashboard development
-
----
-
 # 🚧 Future Improvements
 
 Planned future enhancements include:
