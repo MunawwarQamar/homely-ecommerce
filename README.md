@@ -1,69 +1,49 @@
-# 🏠 Homely | E-Commerce Web Application
+# 🏠 Homely | Full-Stack E-Commerce Web Application
 
-> A modern full-stack e-commerce platform for home products, built using Django as a **solo project** during the Full Stack Bootcamp at **AXSOS Academy**.
+> A modern full-stack e-commerce platform for home products, built as a **solo project** during the Full Stack Bootcamp at **AXSOS Academy**.
 
----
-
-## 🚀 Project Overview
-
-Homely is a complete web-based e-commerce system that simulates a real-world online store experience.
-
-The platform allows users to browse and search products, manage their cart, and contact the store, while providing admins with a powerful dashboard to manage products, monitor messages, and control store content efficiently.
-
-This project focuses on **clean UI/UX, real-world functionality, and secure system design**.
+🌐 **Live Demo:** https://homely-ecommerce.onrender.com/
 
 ---
 
-## ✨ Key Features
+# 📖 Project Overview
 
-### 👤 User Side
-- User registration & login (session-based authentication)
-- Browse products by category
-- Product search functionality
-- Product details page
-- Shopping cart with real-time updates (AJAX)
-- Contact form with email integration
+Homely is a complete web-based e-commerce application that simulates a real-world online shopping experience for home products.
 
----
+The platform allows users to browse products by category, search items, manage their shopping cart, and communicate with the store through a contact system.
 
-### 🛠️ Admin Dashboard
-- Admin-only dashboard access
-- Add / edit products
-- Upload product images
-- Archive products (soft delete instead of permanent removal)
-- View customer messages
-- Mark messages as read
+On the admin side, the system provides a custom dashboard for managing products, uploading images, monitoring customer messages, and controlling store content efficiently.
+
+The project focuses on:
+
+- Clean and responsive UI/UX
+- Real-world functionality
+- Full-stack architecture
+- Admin vs User system roles
+- Secure and scalable backend logic
 
 ---
 
-## 🧠 Technologies Used
+# 🧠 Technologies Used
 
 | Technology | Purpose |
-|-----------|--------|
-| Django (Python) | Backend framework |
-| MySQL | Database |
-| Bootstrap 5 | Responsive UI |
-| JavaScript + AJAX | Dynamic interactions |
+|------------|---------|
+| Python / Django | Backend framework |
+| MySQL | Database management |
+| Bootstrap 5 | Responsive frontend UI |
+| HTML / CSS | Interface structure & styling |
+| JavaScript | Frontend interactions |
+| AJAX | Dynamic cart updates |
 | Pillow | Image handling |
-| SMTP (Gmail) | Email system |
+| SMTP (Gmail) | Email functionality |
 | Git & GitHub | Version control |
+| Render | Deployment |
 
 ---
 
-## 🔐 Security & Validation
+# 📡 API Endpoint
 
-- CSRF Protection
-- Password hashing
-- Server-side validation
-- Image file validation (only images allowed)
-- Role-based access control (Admin vs User)
-- SQL Injection protection (Django ORM)
-
----
-
-## 📡 API Endpoint
-
-```
+```bash
 /api/products/
 ```
 
@@ -71,88 +51,122 @@ Returns product data in JSON format.
 
 ---
 
-## 🖼️ Screenshots
+# 🖼️ Screenshots
 
 | Home | Products | Cart |
-|------|---------|------|
+|------|----------|------|
 | ![Home](Screenshots/home.png) | ![Products](Screenshots/products.png) | ![Cart](Screenshots/cart.png) |
 
 | Admin Dashboard | Admin Products | Messages |
-|-----------------|---------------|----------|
-| ![Admin](Screenshots/admin-dashboard.png) | ![Products](Screenshots/admin-products.png) | ![Messages](Screenshots/messages.png) |
+|-----------------|----------------|----------|
+| ![Admin](Screenshots/admin-dashboard.png) | ![Admin Products](Screenshots/admin-products.png) | ![Messages](Screenshots/messages.png) |
 
 ---
 
-## ⚙️ Setup & Installation
+# ⚙️ Installation & Setup
 
-### 1. Clone the project
-```
-https://github.com/MunawwarQamar/homely-ecommerce.git
-cd homely-project
+## 1. Clone Repository
+
+```bash
+git clone https://github.com/MunawwarQamar/homely-ecommerce.git
+cd homely_project
 ```
 
-### 2. Create virtual environment
-```
+---
+
+## 2. Create Virtual Environment
+
+### Windows
+
+```bash
 python -m venv env
 env\Scripts\activate
 ```
 
-### 3. Install dependencies
+### Mac/Linux
+
+```bash
+python3 -m venv env
+source env/bin/activate
 ```
+
+---
+
+## 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run migrations
-```
+---
+
+## 4. Run Database Migrations
+
+```bash
 python manage.py migrate
 ```
 
-### 5. Run server
-```
+---
+
+## 5. Run Development Server
+
+```bash
 python manage.py runserver
 ```
 
 ---
 
-## 👤 Roles
+# 👥 System Roles
 
-### User
-- Can browse, search, and shop
+## User
 
-### Admin
-- Can manage products and messages through dashboard
+- Browse and search products
+- Add products to cart
+- Contact the store
 
----
+## Admin
 
-## 🎯 Project Purpose
-
-This project was built as a **solo educational project** during AXSOS Academy Bootcamp to demonstrate:
-
-- Full-stack development skills
-- Real-world system implementation
-- Clean UI/UX design
-- Admin vs User role management
+- Manage products
+- Manage customer messages
+- Control store content
 
 ---
 
-## 🚧 Future Improvements
+# 🎯 Project Purpose
 
-- Payment integration
-- Order tracking system
-- Wishlist feature
-- Product reviews
-- Advanced filters
-- Deployment on AWS
+This project was developed as a solo educational project during the **AXSOS Academy Full Stack Bootcamp**.
 
----
+The goal of the project was to demonstrate:
 
-## 👩‍💻 Author
-
-**Munawwar Qamar**  
-Full Stack Developer
+- Full-stack web development skills
+- Backend and database integration
+- Real-world e-commerce functionality
+- Clean UI/UX implementation
+- Authentication and authorization systems
+- Admin dashboard development
 
 ---
 
-## 📄 Notes
+# 🚧 Future Improvements
 
-This project is built for educational purposes and showcases practical implementation of an e-commerce system.
+Planned future enhancements include:
+
+- Online payment integration
+- Wishlist system
+- Order tracking
+- Product reviews and ratings
+- Advanced filtering and sorting
+- User profile management
+
+---
+
+# 👩‍💻 Author
+
+## Munawwar Qamar
+Full Stack Developer  
+
+---
+
+# 📄 Educational Note
+
+This project was built for educational and portfolio purposes as part of the AXSOS Academy Full Stack Bootcamp.
